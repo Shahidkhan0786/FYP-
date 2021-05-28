@@ -1,0 +1,259 @@
+{%extends 'homebase.html'%}
+    <!-- header END -->
+{% block title%}Blog_Home{%endblock%}
+
+{% block content%}
+
+
+<style>
+
+ul, li {
+    list-style: none;
+}
+h5{
+  margin: 0;
+
+}
+h3{
+   background: #f2f2f2;
+  color: #2996bd;
+  margin: 10px 0px 15px;
+  padding-bottom:10px;
+  padding-left: 10px;
+  border-left: 5px solid #32aae1;
+}
+.sidebar.widget {
+
+  border: 1px solid #ddd;
+  padding: 10px 20px;
+}
+.sidebar.widget ul {
+    margin: 0px;
+    padding: 0;
+    overflow: hidden;
+}
+.sidebar.widget ul li {
+    overflow: hidden;
+    font-size: 14px;
+    margin-bottom: 20px;
+    border-bottom: 1px dashed #ddd;
+    padding-bottom: 20px
+}
+.sidebar-thumb{
+    float: left;
+    overflow: hidden;
+    margin-right: 15px;
+}
+.sidebar-thumb img{
+  background: #fff;
+  border: 1px dashed #e0e0e0;
+  padding: 6px;
+  height: 75px;
+  width: 75px;
+
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 100px;
+  border-radius: 100px;
+}
+.sidebar-content h5{
+    font-size: 16px;
+    cursor: pointer;
+    line-height: 24px;
+}
+.sidebar-content h5 a:hover{
+  color: #2996bd;
+}
+
+.sidebar-content h5 a{
+    color: #202020;
+    outline: 0 none;
+    text-decoration: none;
+    font-weight: bold
+}
+.sidebar-meta{
+  margin-top: 10px;
+}
+.sidebar-meta span{
+  color: #2e2e2e;
+}
+.sidebar-meta span.time{
+  margin-right: 10px;
+}
+.sidebar-meta span i{
+  color: #2996bd
+}
+</style>
+
+
+
+
+
+
+
+
+  <!-- Navigation -->
+
+
+  <!-- Page Content -->
+  <div class="container p-5">
+
+    <div class="row">
+
+      <!-- Blog Entries Column -->
+      <div class="col-md-8 mt-5 p-4">
+
+
+        <!-- Blog Post -->
+        {% for i in data%}
+        <div class="card mb-4">
+          <img class="card-img-top" src="{{i.thumbnail.url}}" alt="Card image cap">
+          <div class="card-body">
+            <h2 class="card-title">{{i.title}}</h2>
+            <p class="card-text">
+              {% autoescape off%}
+              {{i.content|truncatewords:20}}
+              {% endautoescape%}
+            </p>
+            <a href="{% url 'displaypost' i.post_id %}" class="btn btn-primary">Read More &rarr;</a>
+          </div>
+          <div class="card-footer text-muted">
+
+
+        <p class="blog-post-meta"><i class="far fa-calendar-alt text-primary p-2"></i>{{i.timeStamp}} by <a href="#"><i class="fas fa-user-check text-primary p-2"></i>{{i.author.username}}</a></p>
+
+
+          </div>
+        </div>
+
+        {% endfor%}
+
+
+        <!-- Pagination -->
+        <ul class="pagination justify-content-center mb-4">
+          {% if data.has_previous%}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ data.previous_page_number}}">&larr; Pre</a>
+          </li>
+          {% endif %}
+
+          <li class="active page-link"><a href="">{{data.number}} out of {{data.paginator.num_pages}} </a></li>
+
+          {% if data.has_next%}
+          <li class="page-item ">
+            <a class="page-link" href="?page={{ data.next_page_number}}">Next &rarr;</a>
+          </li>
+
+          {% endif %}
+        </ul>
+
+      </div>
+
+    
+
+
+      <div class="col-md-4 mt-5">
+
+            <!-- Search Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">Search</h5>
+                <div class="card-body">
+                    <form action="{% url 'postserch' %}" method="post">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="query" placeholder="Search for...">
+                            <span class="input-group-append">
+                <button class="btn btn-secondary" type="submit">Go!</button>
+              </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!--        recentpose-->
+
+
+            <div class="sidebar widget">
+                <h3 class=" p-3">Recent Post</h3>
+                <ul>
+                    {% for i in data1%}
+                    <li>
+                        <div class="sidebar-thumb">
+                            <img class="animated rollIn" src="{{i.thumbnail.url}}" alt=""/>
+                        </div><!-- .Sidebar-thumb -->
+                        <div class="sidebar-content">
+                            <h5 class="animated bounceInRight"><a href="{% url 'displaypost' i.post_id %}">
+
+                                {% autoescape off%}
+                                {{i.content|truncatewords:5}}
+                                {% endautoescape%}
+
+
+                            </a></h5>
+                        </div><!-- .Sidebar-thumb -->
+                        <div class="sidebar-meta">
+                            <span class="time"><i class="fa fa-clock-o"></i> {{i.timeStamp}}</span>
+                        </div><!-- .Sidebar-meta ends here -->
+                    </li><!-- .Li ends here -->
+
+                    {%endfor%}
+
+                </ul><!-- .Ul ends here -->
+            </div><!-- .Widget ends here -->
+
+
+            <!-- Categories Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">Categories</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled mb-0">
+                                {% for i in catag%}
+                                <li>
+                                    <a href="#">{{i.catagory_name}}</a>
+                                </li>
+                                {% endfor %}
+
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side Widget -->
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+      </div>
+
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+
+  <!-- Footer -->
+
+
+  <!-- Bootstrap core JavaScript -->
+
+
+
+
+
+
+{% endblock%}

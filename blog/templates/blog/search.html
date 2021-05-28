@@ -1,0 +1,61 @@
+{%extends 'homebase.html'%}
+
+
+
+{% block content%}
+
+<div class="container p-5">
+<h2>Search results : </h2>
+    {% if data|length < 1 %}
+   <p>No search results</p>
+    Your search query : <b>{{query}}</b> did not match any documents. <br>
+    Suggestions:
+    <ul>
+    <li>Make sure that all words are spelled correctly.</li>
+    <li>Try more general keywords.</li>
+   <li> Try fewer keywords.</li>
+   <li> Try different keywords.</li>
+    </li>
+    </ul>
+
+
+    {% endif %}
+
+
+ </div>
+
+
+
+<!--////////////////////-->
+<div class="content-area">
+            <div class="container max-w900">
+                <!-- Blog large img -->
+				{% for i in data%}
+                    <div class="card mb-4">
+          <img class="card-img-top" src="{{i.thumbnail.url}}" alt="Card image cap">
+          <div class="card-body">
+            <h2 class="card-title">{{i.title}}</h2>
+            <p class="card-text">{{i.content|truncatewords:20}}</p>
+            <a href="{% url 'displaypost' i.post_id %}" class="btn btn-primary">Read More &rarr;</a>
+          </div>
+          <div class="card-footer text-muted">
+
+
+        <p class="blog-post-meta"><i class="far fa-calendar-alt text-primary p-2"></i>{{i.timeStamp}} by <a href="#"><i class="fas fa-user-check text-primary p-2"></i>{{i.author.username}}</a></p>
+
+
+          </div>
+        </div>
+
+				{% endfor%}
+
+                <!-- Blog large img END -->
+                <!-- Pagination start -->
+
+                <!-- Pagination END -->
+            </div>
+        </div>
+
+
+
+{%endblock%}

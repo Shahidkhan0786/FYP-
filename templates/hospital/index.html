@@ -1,0 +1,106 @@
+{% extends 'hospital/homebase.html' %}
+{% load static %}
+
+{%block title%}Home  {%endblock%}
+{% block content %}
+
+
+
+<head>
+    <title>Home</title>
+    <style media="screen">
+
+    .jumbotron {
+      margin-top: 0px;
+      margin-bottom: 0px;
+      background-image: url('{% static "images/bg.jpg" %}');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    .jumbotron h5,
+    h3 {
+      text-align: center;
+    }
+
+
+    .alert {
+      margin: 0px;
+    }
+
+
+
+    .glow {
+      font-size: 50px;
+      color: white;
+      text-align: center;
+      -webkit-animation: glow 1s ease-in-out infinite alternate;
+      -moz-animation: glow 1s ease-in-out infinite alternate;
+      animation: glow 1s ease-in-out infinite alternate;
+    }
+
+    @-webkit-keyframes glow {
+      from {
+        text-shadow: 0 0 10px #eeeeee, 0 0 20px #000000, 0 0 30px #000000, 0 0 40px #000000, 0 0 50px #9554b3, 0 0 60px #9554b3, 0 0 70px #9554b3;
+      }
+
+      to {
+        text-shadow: 0 0 20px #eeeeee, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+      }
+    }
+
+    </style>
+</head>
+<br>
+<br>
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show" role="alert">
+  <strong>Message: </strong> {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endfor %}
+<div class="jumbotron" style="margin-bottom: 0px;margin-top: 0px;">
+    <br>
+    <h5 class="display-3 glow">You’ll Love the Way We Care for You</h5>
+    <br><br><br><br><br>
+    <p>
+    <h3 class="text-danger font-weight-bold">Book </h3>
+
+    <p class="lead text-center">
+        <a class="btn btn-primary btn-lg" href="/patientclick" role="button">Take Appointment</a>
+    </p>
+    <br><br>
+</div>
+
+<br><br><br><br>
+
+{% include "hospital/admin_doctor_patient_card.html" %}
+<br><br><br>
+<hr>
+<h2 class="text-center">Latest Blogs</h2>
+<hr>
+
+<div class="container p-5">
+    <div class="row">
+
+
+        {% for p in dataxx%}
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top " style="height:200px" src="{{p.thumbnail.url}}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title text-primary">{{p.title}}</h5>
+
+                <p class="card-text">{{p.content|truncatechars:100 }}</p>
+
+                <a href="/blog/display-post/{{p.post_id}}/" class="card-link btn btn-primary">Read</a>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+
+{% endblock  %}
